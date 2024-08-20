@@ -10,6 +10,78 @@ function Home() {
     navigate('/register');
   };
 
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [userName, setUserName] = useState("");
+
+  const handleNameChange = (event) => {
+    const { name, value } = event.target;
+    if (name == "firstName") {
+      setFirstName(value);
+      setUserName(`${value} ${lastName}`);
+    } else {
+      setLastName(value);
+      setUserName(`${firstName} ${value}`);
+    }
+  }
+
+  const [userEmail, setUserEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [addressLine1, setAddressLine1] = useState("");
+  const [addressLine2, setAddressLine2] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [zip, setZip] = useState("");
+  const [address, setAddress] = useState("");
+
+  const handleAddressChange = (event) => {
+    const { name, value } = event.target;
+    if (name == "addressLine1") {
+      setAddressLine1(value);
+      setAddress(`${value} ${addressLine2} ${city} ${state} ${zip}`);
+    } else if (name == "addressLine2") {
+      setAddressLine2(value);
+      setAddress(`${addressLine1} ${value} ${city} ${state} ${zip}`);
+    }
+    else if (name == "city") {
+      setCity(value);
+      setAddress(`${addressLine1} ${addressLine2} ${value} ${state} ${zip}`);
+    }
+    else if (name == "state") {
+      setState(value);
+      setAddress(`${addressLine1} ${addressLine2} ${city} ${value} ${zip}`);
+    }
+    else if (name == "zip") {
+      setZip(value);
+      setAddress(`${addressLine1} ${addressLine2} ${city} ${state} ${value}`);
+    }
+  }
+
+  async function save(user) {
+    user.preventDefault();
+    const form = user.target.form;
+    if (form.reportValidity()) {
+      try {
+        // await axios.post("http://localhost:8080/....xyz",{
+        //   name:userName,
+        //   email:userEmail,
+        //   password:password,
+        //   address:address
+        // });
+        signUpClose();
+        alert("User Registered Successfully");
+      } catch (err) {
+        signUpClose();
+        alert(err);
+      }
+    }
+    else {
+      alert("Form is Invalid");
+    }
+  }
+
+
   const [signUpModal, setSignUpModal] = useState(false);
   const signUpShow = () => setSignUpModal(true);
   const signUpClose = () => setSignUpModal(false);
@@ -17,6 +89,18 @@ function Home() {
   const [signInModal, setSignInModal] = useState(false);
   const signInShow = () => setSignInModal(true);
   const signInCLose = () => setSignInModal(false);
+
+  const handleReset = () => {
+    setFirstName('');
+    setLastName('');
+    setUserEmail('');
+    setPassword('');
+    setAddressLine1('');
+    setAddressLine2('');
+    setCity('');
+    setState('');
+    setZip('');
+  };
   return (
     <>
       {/* TOP NAVIGATION BAR */}
@@ -55,6 +139,7 @@ function Home() {
               </li>
             </ul>
           </div>
+          {/* SEARCH BUTTON  */}
           <form class="d-flex mx-2" role="search">
             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
             <button class="btn btn-outline-success" type="submit">Search</button>
@@ -69,6 +154,7 @@ function Home() {
         </div>
       </nav>
 
+      {/* SIGN UP MODAL */}
       {signUpModal && (
         <div class="modal show d-block" id="loginModal" tabindex="-1">
           <div class="modal-dialog  modal-dialog-centered modal-dialog-scrollable">
@@ -81,35 +167,64 @@ function Home() {
                 <form class="row g-3 p-3" height="100" width="100" >
                   <div class="col-md-5 mx-3 p-1">
                     <label for="inputEmail4" class="form-label">First Name</label>
-                    <input type="text" class="form-control" placeholder="First name" aria-label="First name" required />
+                    <input type="text" class="form-control" placeholder="First name" aria-label="First name"
+                      name="firstName"
+                      value={firstName}
+                      onChange={handleNameChange}
+                      required
+                    />
                   </div>
                   <div class="col-md-5 mx-3 p-1">
                     <label for="inputEmail4" class="form-label">Last Name</label>
-                    <input type="text" class="form-control" placeholder="Last name" aria-label="Last name" />
+                    <input type="text" class="form-control" placeholder="Last name" aria-label="Last name"
+                      name="lastName"
+                      value={lastName}
+                      onChange={handleNameChange} />
                   </div>
                   <div class="col-md-5 mx-3 p-1" >
                     <label for="inputEmail4" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="inputEmail4" placeholder="@email" required />
+                    <input type="email" class="form-control" id="inputEmail4" placeholder="@email" required
+                      value={userEmail}
+                      onChange={(event) => {
+                        setUserEmail(event.target.value);
+                      }} />
                   </div>
                   <div class="col-md-5 mx-3 p-1">
                     <label for="inputPassword4" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="inputPassword4" placeholder="******" required />
+                    <input type="password" class="form-control" id="inputPassword4" placeholder="******" required
+                      value={password}
+                      onChange={(event) => {
+                        setPassword(event.target.value);
+                      }} />
                   </div>
                   <div class="col-10 mx-3 p-1">
                     <label for="inputAddress" class="form-label">Address</label>
-                    <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St" required />
+                    <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St" required
+                      name="addressLine1"
+                      value={addressLine1}
+                      onChange={handleAddressChange} />
                   </div>
                   <div class="col-10 mx-3 p-1">
                     <label for="inputAddress2" class="form-label">Address 2</label>
-                    <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor" />
+                    <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor"
+                      name="addressLine2"
+                      value={addressLine2}
+                      onChange={handleAddressChange} />
                   </div>
                   <div class="col-md-5 mx-3 p-1">
                     <label for="inputCity" class="form-label">City</label>
-                    <input type="text" class="form-control" id="inputCity" required />
+                    <input type="text" class="form-control" id="inputCity"
+                      name="city"
+                      value={city}
+                      onChange={handleAddressChange}
+                      required />
                   </div>
                   <div class="col-md-3 p-1">
                     <label for="inputState" class="form-label">State</label>
-                    <select id="inputState" class="form-select" required>
+                    <select id="inputState" class="form-select" required
+                      name="state"
+                      value={state}
+                      onChange={handleAddressChange}>
                       <option selected>Choose One </option>
                       <option>Delhi</option>
                       <option>U.P</option>
@@ -118,7 +233,10 @@ function Home() {
                   </div>
                   <div class="col-md-2 mx-3 p-1">
                     <label for="inputZip" class="form-label">Zip</label>
-                    <input type="text" class="form-control" id="inputZip" required />
+                    <input type="text" class="form-control" id="inputZip" required
+                      name="zip"
+                      value={zip}
+                      onChange={handleAddressChange} />
                   </div>
                   <div class="col-12 mx-3 p-1">
                     <div class="form-check">
@@ -130,8 +248,8 @@ function Home() {
                   </div>
 
                   <div class="modal-footer">
-                    <button type="reset" class="btn btn-outline-primary">Reset</button>
-                    <button type="submit" class="btn btn-outline-success" onClick={signUpClose}>Sign Up</button>
+                    <button type="reset" class="btn btn-outline-primary" onClick={handleReset}>Reset</button>
+                    <button type="submit" class="btn btn-outline-success" onClick={save}>Sign Up</button>
                   </div>
                 </form>
               </div>
@@ -139,7 +257,7 @@ function Home() {
           </div>
         </div>
       )}
-
+      {/* SIGN IN MODAL  */}
       {signInModal && (
         <div class="modal show d-block" id="loginModal" tabindex="-1">
           <div class="modal-dialog  modal-dialog-centered">
@@ -169,7 +287,7 @@ function Home() {
                   </div>
 
                   <div class="modal-footer">
-                    <button type="reset" class="btn btn-outline-primary">Reset</button>
+                    <button type="reset" class="btn btn-outline-primary" onClick={handleReset}>Reset</button>
                     <button type="submit" class="btn btn-outline-success" onClick={signInCLose}>Sign In</button>
                   </div>
                 </form>
@@ -179,8 +297,6 @@ function Home() {
         </div>
       )}
     </>
-
-    // SEARCH BUTTON 
 
   );
 
