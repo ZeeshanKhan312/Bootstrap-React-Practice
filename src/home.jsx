@@ -3,12 +3,11 @@ import { Link } from 'react-router-dom';
 import React, { useState } from "react";
 function Home() {
 
-  // <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   const navigate = useNavigate();
 
-  const signUp = () => {
-    navigate('/register');
-  };
+  // const signUp = () => {
+  //   navigate('/register');
+  // };
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -80,15 +79,35 @@ function Home() {
       alert("Form is Invalid");
     }
   }
-
-
   const [signUpModal, setSignUpModal] = useState(false);
   const signUpShow = () => setSignUpModal(true);
   const signUpClose = () => setSignUpModal(false);
 
+
+  async function login(user) {
+    user.preventDefault();
+    const form = user.target.form;
+    if (form.reportValidity()) {
+      try {
+        // await axios.get("http://localhost:8080/....xyz",{
+        //   email:userEmail,
+        //   password:password,
+        // });
+        signInClose();
+        alert("User Registered Successfully");
+      } catch (err) {
+        signInClose();
+        alert(err);
+      }
+    } else {
+      alert("Form is Invalid");
+    }
+  }
+
   const [signInModal, setSignInModal] = useState(false);
   const signInShow = () => setSignInModal(true);
-  const signInCLose = () => setSignInModal(false);
+  const signInClose = () => setSignInModal(false);
+
 
   const handleReset = () => {
     setFirstName('');
@@ -257,6 +276,8 @@ function Home() {
           </div>
         </div>
       )}
+
+
       {/* SIGN IN MODAL  */}
       {signInModal && (
         <div class="modal show d-block" id="loginModal" tabindex="-1">
@@ -264,17 +285,26 @@ function Home() {
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title">Sign In</h5>
-                <button type="button" class="btn-close" onClick={signInCLose}></button>
+                <button type="button" class="btn-close" onClick={signInClose}></button>
               </div>
               <div class="modal-body">
                 <form class="row g-3 p-3" height="100" width="100" >
                   <div class="col-md-5 mx-3 p-1" >
                     <label for="inputEmail4" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="inputEmail4" placeholder="@email" required />
+                    <input type="email" class="form-control" id="inputEmail4" placeholder="@email" required
+                      value={userEmail}
+                      onChange={(event) => {
+                        setUserEmail(event.target.value);
+                      }} />
                   </div>
                   <div class="col-md-5 mx-3 p-1">
                     <label for="inputPassword4" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="inputPassword4" placeholder="******" required />
+                    <input type="password" class="form-control" id="inputPassword4" placeholder="******"
+                      value={password}
+                      onChange={(event) => {
+                        setPassword(event.target.value);
+                      }}
+                      required />
                   </div>
 
                   <div class="col-12 mx-3 p-1">
@@ -288,7 +318,7 @@ function Home() {
 
                   <div class="modal-footer">
                     <button type="reset" class="btn btn-outline-primary" onClick={handleReset}>Reset</button>
-                    <button type="submit" class="btn btn-outline-success" onClick={signInCLose}>Sign In</button>
+                    <button type="submit" class="btn btn-outline-success" onClick={login}>Sign In</button>
                   </div>
                 </form>
               </div>
@@ -296,6 +326,341 @@ function Home() {
           </div>
         </div>
       )}
+
+      <div id="carouselExampleCaptions" class="carousel slide bg-dark" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img src='https://unsplash.com/1600x900/?nature,water' class="d-block mx-auto"
+              // JS code
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = process.env.PUBLIC_URL + "/movie1.jpg";
+              }}
+              style={{ height: "450px", width: "85%", }} />
+            <div class="carousel-caption d-none d-md-block text-white">
+              <h5>First Movie Name</h5>
+              <p>Some representative placeholder content for the first slide.</p>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <img src="" class="d-block mx-auto"
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = process.env.PUBLIC_URL + "/movie2.jpg";
+              }}
+              style={{ height: "450px", width: "85%" }} />
+            <div class="carousel-caption d-none d-md-block">
+              <h5>Second Movie Name</h5>
+              <p>Some representative placeholder content for the second slide.</p>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <img src="https://unsplash.com/1600x900/?nature,water" class="d-block mx-auto"
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = process.env.PUBLIC_URL + "/movie2.jpg";
+              }}
+              style={{ height: "450px", width: "85%", }} />
+            <div class="carousel-caption d-none d-md-block">
+              <h5>Third Movie Name</h5>
+              <p>Some representative placeholder content for the third slide.</p>
+            </div>
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+
+      <h3 className="text-dark my-3 mx-5" 
+      style={{ fontFamily: "Arial, sans-serif", fontWeight: "bold"}}>
+        Recent Release
+      </h3>
+
+      <div className="container-fluid my-4 mx-3">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3" style={{paddingRight:'8px'}}>
+        {/* <div class="col" style={{ width: "25%" }}> */}
+        <div class="col">
+          <div class="card shadow-sm">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+            <div class="card-body">
+              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-outline-danger">Review</button>
+                  <button type="button" class="btn btn-sm btn-outline-dark">Book</button>
+                </div>
+                <small class="text-body-secondary">4.5</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="card shadow-sm">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+            <div class="card-body">
+              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-outline-danger">Review</button>
+                  <button type="button" class="btn btn-sm btn-outline-dark">Book</button>
+                </div>
+                <small class="text-body-secondary">4.5</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="card shadow-sm">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+            <div class="card-body">
+              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-outline-danger">Review</button>
+                  <button type="button" class="btn btn-sm btn-outline-dark">Book</button>
+                </div>
+                <small class="text-body-secondary">4.5</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="card shadow-sm">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+            <div class="card-body">
+              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-outline-danger">Review</button>
+                  <button type="button" class="btn btn-sm btn-outline-dark">Book</button>
+                </div>
+                <small class="text-body-secondary">4.5</small>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col">
+          <div class="card shadow-sm">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+            <div class="card-body">
+              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-outline-danger">Review</button>
+                  <button type="button" class="btn btn-sm btn-outline-dark">Book</button>
+                </div>
+                <small class="text-body-secondary">4.5</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="card shadow-sm">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+            <div class="card-body">
+              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-outline-danger">Review</button>
+                  <button type="button" class="btn btn-sm btn-outline-dark">Book</button>
+                </div>
+                <small class="text-body-secondary">4.5</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="card shadow-sm">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+            <div class="card-body">
+              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-outline-danger">Review</button>
+                  <button type="button" class="btn btn-sm btn-outline-dark">Book</button>
+                </div>
+                <small class="text-body-secondary">4.5</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="card shadow-sm">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+            <div class="card-body">
+              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-outline-danger">Review</button>
+                  <button type="button" class="btn btn-sm btn-outline-dark">Book</button>
+                </div>
+                <small class="text-body-secondary">4.5</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      </div>
+
+      <h3 className="text-dark my-3 mx-5" 
+      style={{ fontFamily: "Arial, sans-serif", fontWeight: "bold"}}>
+        Trending Movies
+      </h3>
+
+      <div className="container-fluid my-4 mx-3">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3" style={{paddingRight:'8px'}}>
+        {/* <div class="col" style={{ width: "25%" }}> */}
+        <div class="col">
+          <div class="card shadow-sm">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+            <div class="card-body">
+              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-outline-danger">Review</button>
+                  <button type="button" class="btn btn-sm btn-outline-dark">Book</button>
+                </div>
+                <small class="text-body-secondary">4.5</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="card shadow-sm">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+            <div class="card-body">
+              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-outline-danger">Review</button>
+                  <button type="button" class="btn btn-sm btn-outline-dark">Book</button>
+                </div>
+                <small class="text-body-secondary">4.5</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="card shadow-sm">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+            <div class="card-body">
+              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-outline-danger">Review</button>
+                  <button type="button" class="btn btn-sm btn-outline-dark">Book</button>
+                </div>
+                <small class="text-body-secondary">4.5</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="card shadow-sm">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+            <div class="card-body">
+              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-outline-danger">Review</button>
+                  <button type="button" class="btn btn-sm btn-outline-dark">Book</button>
+                </div>
+                <small class="text-body-secondary">4.5</small>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col">
+          <div class="card shadow-sm">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+            <div class="card-body">
+              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-outline-danger">Review</button>
+                  <button type="button" class="btn btn-sm btn-outline-dark">Book</button>
+                </div>
+                <small class="text-body-secondary">4.5</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="card shadow-sm">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+            <div class="card-body">
+              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-outline-danger">Review</button>
+                  <button type="button" class="btn btn-sm btn-outline-dark">Book</button>
+                </div>
+                <small class="text-body-secondary">4.5</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="card shadow-sm">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+            <div class="card-body">
+              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-outline-danger">Review</button>
+                  <button type="button" class="btn btn-sm btn-outline-dark">Book</button>
+                </div>
+                <small class="text-body-secondary">4.5</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="card shadow-sm">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+            <div class="card-body">
+              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-outline-danger">Review</button>
+                  <button type="button" class="btn btn-sm btn-outline-dark">Book</button>
+                </div>
+                <small class="text-body-secondary">4.5</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      </div>
+
+        
     </>
 
   );
